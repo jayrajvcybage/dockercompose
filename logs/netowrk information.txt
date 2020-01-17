@@ -1,0 +1,50 @@
+C:\Github\vinayak>docker network inspect vinayak_backend
+[
+    {
+        "Name": "vinayak_backend",
+        "Id": "786211a0d626c55db03c575fc4f2cc072c99693bc62743b6dd23fee5974d574f",
+        "Created": "2020-01-17T14:45:46.5411459Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.22.0.0/16",
+                    "Gateway": "172.22.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": true,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "390107e09c18bf10d84320e743466f37933e17674dadb970251c0050102eee8f": {
+                "Name": "web",
+                "EndpointID": "b2273f60de00950337171830ef087e44cca3b5793b2331ce8fe6e34c64e9f936",
+                "MacAddress": "02:42:ac:16:00:03",
+                "IPv4Address": "172.22.0.3/16",
+                "IPv6Address": ""
+            },
+            "acdd718690c674ee6847e4e632fdcf8894d406f695f50b755e0c9974b944e629": {
+                "Name": "webapi",
+                "EndpointID": "2c8ba4fc15bc69efcbbff0af1f01e3c1672604db19b4d54dcc5defc1e76a22b9",
+                "MacAddress": "02:42:ac:16:00:02",
+                "IPv4Address": "172.22.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.network": "backend",
+            "com.docker.compose.project": "vinayak",
+            "com.docker.compose.version": "1.24.1"
+        }
+    }
+]

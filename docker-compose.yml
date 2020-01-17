@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  web:
+    build: hello
+    container_name: web
+    hostname: web
+    image: composereg.azurecr.io/hello
+    networks:
+      - backend
+    ports:
+        - 80:80
+  webapi:
+    build: HelloApi
+    container_name: webapi
+    hostname: webapi
+    image: composereg.azurecr.io/helloapi
+    networks:
+      - backend
+       
+
+networks:
+  backend:
+   # ipam:
+      driver: bridge
+    #  config:
+     #   - subnet: "172.16.238.0/24"
+        
+        

@@ -1,0 +1,150 @@
+C:\Github\vinayak>docker-compose build --no-cache
+Building web
+Step 1/10 : FROM node:latest as node
+ ---> f7756628c1ee
+Step 2/10 : WORKDIR /app
+ ---> Running in c67d04d18394
+Removing intermediate container c67d04d18394
+ ---> e8daad154b05
+Step 3/10 : COPY . .
+ ---> e456eb0f912a
+Step 4/10 : RUN npm install
+ ---> Running in 2134d4e9f90b
+npm WARN bootstrap@4.4.1 requires a peer of popper.js@^1.16.0 but none is installed. You must install peer dependencies yourself.
+npm WARN karma-jasmine-html-reporter@1.5.1 requires a peer of jasmine-core@>=3.5 but none is installed. You must install peer dependencies yourself.
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.11 (node_modules/webpack-dev-server/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.11: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.11 (node_modules/watchpack/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.11: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.11 (node_modules/karma/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.11: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.11 (node_modules/@angular/compiler-cli/node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.11: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@2.1.2 (node_modules/fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@2.1.2: wanted {"os":"darwin","arch":"any"} (current: {"os":"linux","arch":"x64"})
+
+audited 18884 packages in 6.511s
+
+24 packages are looking for funding
+  run `npm fund` for details
+
+found 2 high severity vulnerabilities
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 2134d4e9f90b
+ ---> e6a74b79734c
+Step 5/10 : RUN npm run build
+ ---> Running in 2087289ede64
+
+> hello@0.0.0 build /app
+> ng build --prod
+
+Generating ES5 bundles for differential loading...
+ES5 bundle generation complete.
+
+chunk {3} polyfills-es5.6696c533341b95a3d617.js (polyfills-es5) 123 kB [initial] [rendered]
+chunk {2} polyfills-es2015.2987770fde9daa1d8a2e.js (polyfills) 36.4 kB [initial] [rendered]
+chunk {0} runtime-es2015.edb2fcf2778e7bf1d426.js (runtime) 1.45 kB [entry] [rendered]
+chunk {0} runtime-es5.edb2fcf2778e7bf1d426.js (runtime) 1.45 kB [entry] [rendered]
+chunk {1} main-es2015.81ebafdd9f56c4802152.js (main) 227 kB [initial] [rendered]
+chunk {1} main-es5.81ebafdd9f56c4802152.js (main) 280 kB [initial] [rendered]
+chunk {4} styles.3ff695c00d717f2d2a11.css (styles) 0 bytes [initial] [rendered]
+Date: 2020-01-17T14:44:48.228Z - Hash: 924d2865263b21f32d93 - Time: 28140ms
+Removing intermediate container 2087289ede64
+ ---> 184187fcfb07
+
+Step 6/10 : FROM nginx:alpine
+ ---> 36189e6707f4
+Step 7/10 : COPY --from=node /app/dist/hello /usr/share/nginx/html
+ ---> 92a3562c6f9f
+Step 8/10 : COPY --from=node /app/nginx-custom.conf /etc/nginx/conf.d/default.conf
+ ---> 3653334eecc3
+Step 9/10 : EXPOSE 80
+ ---> Running in 0a3ea0d04e16
+Removing intermediate container 0a3ea0d04e16
+ ---> e8dbe2257da8
+Step 10/10 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Running in 6f8f0558d479
+Removing intermediate container 6f8f0558d479
+ ---> afde9ac8d0b2
+
+Successfully built afde9ac8d0b2
+Successfully tagged composereg.azurecr.io/hello:latest
+Building webapi
+Step 1/17 : FROM microsoft/dotnet:2.2-aspnetcore-runtime-alpine AS base
+ ---> 0e59b34ad3cb
+Step 2/17 : WORKDIR /app
+ ---> Running in 76d8a447ad46
+Removing intermediate container 76d8a447ad46
+ ---> 43dbe6869908
+Step 3/17 : EXPOSE 80
+ ---> Running in 6ddf4404e932
+Removing intermediate container 6ddf4404e932
+ ---> d129dd75c244
+Step 4/17 : EXPOSE 443
+ ---> Running in cafe2fcdcb57
+Removing intermediate container cafe2fcdcb57
+ ---> 4768ac87d160
+
+Step 5/17 : FROM microsoft/dotnet:2.2-sdk-alpine AS build
+ ---> 6ab73e836ec1
+Step 6/17 : WORKDIR /src
+ ---> Running in 4d1f9f0fb760
+Removing intermediate container 4d1f9f0fb760
+ ---> f37bb1544355
+Step 7/17 : COPY ["HelloApi/HelloApi.csproj", "HelloApi/"]
+ ---> fc1d472cbafc
+Step 8/17 : RUN dotnet restore "HelloApi/HelloApi.csproj"
+ ---> Running in 6e1cec64aa76
+  Restore completed in 6.12 sec for /src/HelloApi/HelloApi.csproj.
+Removing intermediate container 6e1cec64aa76
+ ---> b8d536b54565
+Step 9/17 : COPY . .
+ ---> cde9ba53daee
+Step 10/17 : WORKDIR "/src/HelloApi"
+ ---> Running in cf370c13bd77
+Removing intermediate container cf370c13bd77
+ ---> 1a5f8e47270c
+Step 11/17 : RUN dotnet build "HelloApi.csproj" -c Release -o /app
+ ---> Running in 2503e538e92d
+Microsoft (R) Build Engine version 16.0.450+ga8dc7f1d34 for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 49.93 ms for /src/HelloApi/HelloApi.csproj.
+  HelloApi -> /app/HelloApi.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.32
+Removing intermediate container 2503e538e92d
+ ---> 17ae09729601
+
+Step 12/17 : FROM build AS publish
+ ---> 17ae09729601
+Step 13/17 : RUN dotnet publish "HelloApi.csproj" -c Release -o /app
+ ---> Running in 4b7bc357416b
+Microsoft (R) Build Engine version 16.0.450+ga8dc7f1d34 for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+  Restore completed in 51.55 ms for /src/HelloApi/HelloApi.csproj.
+  HelloApi -> /src/HelloApi/bin/Release/netcoreapp2.1/HelloApi.dll
+  HelloApi -> /app/
+Removing intermediate container 4b7bc357416b
+ ---> f88dfc489bfc
+
+Step 14/17 : FROM base AS final
+ ---> 4768ac87d160
+Step 15/17 : WORKDIR /app
+ ---> Running in f4d5c2763c8a
+Removing intermediate container f4d5c2763c8a
+ ---> fff09161b51e
+Step 16/17 : COPY --from=publish /app .
+ ---> 8bf37ecee4df
+Step 17/17 : ENTRYPOINT ["dotnet", "HelloApi.dll"]
+ ---> Running in 3587e5a2feca
+Removing intermediate container 3587e5a2feca
+ ---> 812d83b135fd
+
+Successfully built 812d83b135fd
+Successfully tagged composereg.azurecr.io/helloapi:latest
